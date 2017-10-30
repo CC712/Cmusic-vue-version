@@ -1,0 +1,8 @@
+{
+   "myServer": "http://139.168.199.188:3000",
+   "others": "http://musicapi.leanapp.cn",
+   "banner": "/banner",
+   "personalized": "/personalized",
+   "djprogram": "/personalized/djprogram",
+   "newsong": "/personalized/newsong"
+}

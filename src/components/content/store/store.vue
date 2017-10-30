@@ -1,84 +1,47 @@
 <template>
-<div id='store' v-on:touchstart.stop='say'>
-	<carousel></carousel>
-	<el-row class='title'>
-		<el-col :offset='2' :span='4'>
-			<span style='color:red;'>推荐歌单</span>
-		</el-col>
-		<el-col :offset='14' :span='4'>
-			<span>更多</span>
-		</el-col>
-	</el-row>
-	<el-row>
-		<el-col :span='8' :offset='0' v-for='n in 3' :key='n'>
-			<el-card :body-style='{padding:"0px"}' class='card'>
-				<img class='image' src='../../../../static/img/login_023.jpg' alt="" />
-
-				<div style='padding:12px;'>
-					<p style="text-align:center;">{{n}}</p>
-					<i class='el-icon-caret-right'></i>
-					<span>151k</span>
-				</div>
-			</el-card>
-		</el-col>
-
-	</el-row>
-	<el-row>
-		<el-col :span='8' :offset='0' v-for='n in 3' :key='n'>
-			<el-card :body-style='{padding:"0px"}' class='card'>
-				<img class='image' src="../../../../static/img/login_023.jpg" alt="" />
-				<div style='padding:12px;'>
-					<p>名字</p>
-					<i class='el-icon-caret-right'></i>
-					<span>151k</span>
-				</div>
-			</el-card>
-		</el-col>
-
-	</el-row>
-	<el-row class='title'>
-		<el-col :offset='2' :span='4'>
-			<span style='color:red;'>场景电台</span>
-		</el-col>
-		<el-col :offset='14' :span='4'>
-			<span>更多</span>
-		</el-col>
-	</el-row>
-	<el-row>
-		<el-col :span='8' :offset='0' v-for='n in 3' :key='n'>
-			<el-card :body-style='{padding:"0px",overflow:"hidden",position:"relative"}' class='card'>
-				<img class='circle-image' src='../../../../static/img/login_09.jpg' alt="" />
-				<img class='blur-bg' src="../../../../static/img/login_09.jpg" alt="" />
-				<div style='padding:12px;'>
-					<p style="text-align:center;">{{n}}</p>
-					<i class='el-icon-caret-right'></i>
-					<span>151k</span>
-				</div>
-			</el-card>
-		</el-col>
-
-	</el-row>
+<div id='store' >
+	<carousel :imgUrls='carouselRes'></carousel>
+	<personal :resData='personalRes'></personal>
+	<djprogram :djres='djprogramRes'></djprogram>
+	<newsong :songRes='newsongRes'></newsong>
 </div>
 </template>
 
 <script>
-import carousel from './carousel'
+import url from '../../../common/js/requestUrl.json'
+import carousel from './store-carousel'
+import personal from './store-personalized'
+import djprogram from './store-djprogram'
+import newsong from './store-newsong'
 export default {
   name: 'store',
+  components: {
+    carousel,
+    personal,
+    djprogram,
+    newsong
+  },
   data () {
     return {
-      data: [{ title: '123', value: 'dgus' }, { title: 'sqd', value: '12' }, { title: '123', value: 'dgus' }, { title: 'sqd', value: '12' }]
+      data: [{ title: '123', value: 'dgus' }, { title: 'sqd', value: '12' }, { title: '123', value: 'dgus' }, { title: 'sqd', value: '12' }],
+      carouselRes: [],
+      personalRes: [],
+      djprogramRes: [],
+      newsongRes: []
     }
+  },
+  created () {
+    let personalReq = url.others + url.personalized
+    this.$http.get(personalReq).then((r) => { this.personalRes = r.body.result; console.log(r, this.personalRes) })
+    let djprogramReq = url.others + url.djprogram
+    this.$http.get(djprogramReq).then((r) => { this.djprogramRes = r.body.result; console.log(r, this.djprogramRes) })
+    let newsongReq = url.others + url.newsong
+    this.$http.get(newsongReq).then((r) => { this.newsongRes = r.body.result; console.log('songsong', r, this.newsongRes) })
   },
   methods: {
     say () {
       console.log('store ')
     }
-  },
-  components: {
-    carousel
-  },
-  mounted () {
   }
 }
 </script>
@@ -94,29 +57,9 @@ export default {
 .image {
 	width: 100%;
 }
-
-.circle-image {
-	width: 50%;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	border-radius: 50%;
-	@extend .image;
-}
-
-.blur-bg {
-	width: 100%;
-	filter: blur(20px);
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: -100;
-}
-
 .card {
 	margin: 3px;
 }
-
 .title {
 	font-size: 20px;
 	line-height: 40px;

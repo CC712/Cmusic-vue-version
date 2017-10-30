@@ -29,7 +29,6 @@ export default {
 <style>
 #content {
 	flex: 1;
-	white-space: nowrap;
 	overflow-x: auto;
 	display: flex;
 }

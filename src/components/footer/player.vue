@@ -1,17 +1,17 @@
 <template>
-<el-row id='player' v-on:reload='reload' >
-		<div class='avatar' >
+<el-row id='c-player' v-on:reload='reload' >
+		<div class='c-player__avatar' >
 			<img :src="picUrl" />
 		</div>
-		<div  class='info'>
+		<div  class='c-player__info'>
 			<p class='ellip'>{{name}}</p>
 			<p class='ellip'>{{artist}}</p>
 		</div>
-		<div class='btns'>
-			<div class="btn" @click='pushList'>
+		<div class='c-player__btns'>
+			<div class="c-player__btn" @click='pushList'>
 				<i :class='loveBtn' ></i>
 			</div>
-			<div class="btn" @click='togglePlay' >
+			<div class="c-player__btn" @click='togglePlay' >
 				<i :class='playBtn'></i>
 			</div>
 		</div>
@@ -33,19 +33,9 @@ export default {
       artist: '',
       picUrl: '../../static/login_03.jpg',
       audio: null,
-      songData: null
-    }
-  },
-  methods: {
-    pushList () {
-    },
-    togglePlay () {
-      this.isPlay = !this.isPlay
-      this.isPlay ? this.audio.play() : this.audio.pause()
-    },
-    reload (r) {
-      this.songData = r.songData
-      this.mp3Url = r.url
+      songData: null,
+      remote: 'http://139.199.188.25:3000',
+      remote2: 'http://musicapi.leanapp.cn'
     }
   },
   computed: {
@@ -61,15 +51,16 @@ export default {
   watch: {
     songData () {
       this.name = this.songData.name
-      this.artist = this.songData.artists[0].name
-      this.picUrl = this.songData.album.picUrl
+      this.artist = this.songData.ar[0].name
+      this.picUrl = this.songData.al.picUrl
+      console.log(this.artist, this.name)
     }
   },
   created () {
     bus.$off('reload')
-    bus.$on('reload', (r) => {
-      console.log('getget', r)
-      this.reload(r)
+    bus.$on('reload', (id) => {
+      console.log('getget', id)
+      this.reload(id)
     })
   },
   mounted () {
@@ -80,21 +71,44 @@ export default {
   },
   destroy () {
     bus.$off('reload')
+  },
+  methods: {
+    pushList () {
+    },
+    togglePlay () {
+      this.isPlay = !this.isPlay
+      this.isPlay ? this.audio.play() : this.audio.pause()
+    },
+    reload (id) {
+      this.detailReq(id)
+      this.urlReq(id)
+    },
+    detailReq (id) {
+      let url = this.remote2 + `/song/detail?ids=` + id
+      return this.$http.get(url).then((r) => {
+        this.songData = r.body.songs[0]
+      })
+    },
+    urlReq (id) {
+      let url = this.remote2 + `/music/url?id=` + id
+      return this.$http.get(url).then((r) => {
+        this.mp3Url = r.body.data[0].url
+      })
+    }
   }
 }
 </script>
 
 <style lang="scss">
 @import '../../common/scss/mixin.scss';
-#player {
+#c-player {
 	position: relative;
 	display: flex;
 	height: 64px;
 	padding: 5px 15px;
 	vertical-align: bottom;
-	.avatar {
+	.c-player__avatar {
 		height: 80%;
-		vertical-align: middle;
 	}
 	&:before {
 		position: absolute;
@@ -110,11 +124,10 @@ export default {
 		width: 50px;
 		line-height: 64px;
 	}
-	.info {
+	.c-player__info {
 		flex: 1;
 		margin-left: 10px;
 		font-size: 20px;
-		vertical-align: bottom;
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
@@ -124,10 +137,10 @@ export default {
 		text-overflow: ellipsis;
 		}
 	}
-	.btns {
+	.c-player__btns {
 		flex: 0 0 auto;
 		display: flex;
-		.btn {
+		.c-player__btn {
 			display: flex;
 			width: 40px;
 			height: 40px;

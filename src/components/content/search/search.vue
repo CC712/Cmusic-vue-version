@@ -12,7 +12,7 @@
 	</el-row>
 	<ul v-if="data">
 	<li v-for="(song, index) in songs" :key='index'>
-		<div class='song-item' v-on:click.stop='reload(index)'>
+		<div class='song-item' @click.stop='reload(song)'>
 			<div class='avatar'>
 				<img :src="song.album.picUrl" />
 			</div>
@@ -66,17 +66,9 @@ export default {
       console.log(`req${this.input}`, url)
       this.$http.get(url).then(function (r) { console.log('pro', r); this.data = r.body.result })
     },
-    urlReq (id) {
-      let url = this.remote2 + `/music/url?id=` + id
-      return this.$http.get(url).then((r) => { console.log('url', r.data.data[0]); this.urlData = r.data.data[0].url; return this.urlData }, (r) => { console.log('fail', r) })
-    },
-    reload (index) {
-      let songData = this.data.songs[index]
-      let p = this.urlReq(songData.id)
-      p.then((r) => {
-        console.log('emit', songData, r)
-        bus.$emit('reload', {songData, 'url': r})
-      })
+    reload (song) {
+      console.log('emit search', song.id)
+      bus.$emit('reload', song.id)
     }
   }
 }
