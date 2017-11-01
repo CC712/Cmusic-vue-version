@@ -1,35 +1,21 @@
 <template>
   <div id="app">
-  <v-header  v-bind:pageIndex='pageIndex' v-on:pageChange='getIndex'></v-header>
-  <v-content  class='content' v-bind:pageIndex='pageIndex' v-on:pageChange='getIndex' >
-  	
-  </v-content>
-  <player  v-model='songData'></player>
+  <router-view></router-view>
   </div>
 </template>
 
 <script>
-import header from './components/header/header'
-import content from './components/content/content'
-import player from './components/footer/player'
+import TheHome from './components/TheHome'
 export default {
   name: 'app',
   data () {
     return {
-      pageIndex: 0,
-      songData: null
     }
   },
   methods: {
-    getIndex (index) {
-      console.log('app  get', index)
-      this.pageIndex = index
-    }
   },
   components: {
-    'v-header': header,
-    'v-content': content,
-    player
+    TheHome
   }
 }
 </script>

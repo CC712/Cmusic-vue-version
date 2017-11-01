@@ -68,8 +68,9 @@ export default {
 }
 .c-song__item{
 	margin: 10px 15px;
-
 	list-style: none;
+	display: flex;
+	align-items: center;
 }
 .c-song__img{
 	height: 40px;
@@ -77,10 +78,9 @@ export default {
 	vertical-align: middle;
 }
 .c-song__info{
-	display: inline-block;
+	flex: 1 auto;
 	margin-left: 20px;
 	vertical-align: middle;
-	width: 70%;
 	border-bottom: 1px solid #ccc;
 	padding: 10px;
 	white-space: nowrap;
@@ -95,8 +95,6 @@ export default {
 	font-size: 14px;
 }
 .c-song__playbtn{
-	float: right;
-	margin-top: 15px;
 }
 .c-song__morebtn{
 	text-align: center;

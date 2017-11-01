@@ -1,7 +1,11 @@
 <template>
-	<div id='content'>
-	<router-view class='item'></router-view>
-	</div>
+<div id='content'>
+	<transition name='pageTrans' mode='out-in'>
+		<keep-alive>
+			<router-view class='item'></router-view>
+		</keep-alive>
+	</transition>
+</div>
 </template>
 
 <script>
@@ -44,5 +48,11 @@ export default {
 
 .item::-webkit-scrollbar {
 	display: none;
+}
+.pageTrans-enter-active, .pageTrans-leave-active {
+  transition: all 0.5s;
+}
+.pageTrans-enter, .pageTrans-leave-to /* .pageTrans-leave-active in below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

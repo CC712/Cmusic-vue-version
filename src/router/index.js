@@ -3,25 +3,32 @@ import Router from 'vue-router'
 import store from '../components/content/store/store'
 import myStore from '../components/content/myStore/myStore'
 import search from '../components/content/search/search'
+import TheHome from '../components/TheHome'
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/store'
+      redirect: '/home/store'
     },
     {
-      path: '/store',
-      component: store
-    },
-    {
-      path: '/myStore',
-      component: myStore
-    },
-    {
-      path: '/search',
-      component: search
+      path: '/home',
+      component: TheHome,
+      children: [
+        {
+          path: 'store',
+          component: store
+        },
+        {
+          path: 'mystore',
+          component: myStore
+        },
+        {
+          path: 'search',
+          component: search
+        }
+      ]
     }
   ],
   linkActiveClass: 'active'

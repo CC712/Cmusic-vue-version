@@ -1,8 +1,6 @@
 <template>
 <el-row id='c-player' v-on:reload='reload' >
-		<div class='c-player__avatar' >
-			<img :src="picUrl" />
-		</div>
+			<img class='c-player__avatar'  :src="picUrl" />
 		<div  class='c-player__info'>
 			<p class='ellip'>{{name}}</p>
 			<p class='ellip'>{{artist}}</p>
@@ -22,6 +20,11 @@
 <script>
 import bus from '../../bus'
 export default {
+  props: {
+    idGiven: {
+      type: Number
+    }
+  },
   data () {
     return {
       isPlay: false,
@@ -54,12 +57,15 @@ export default {
       this.artist = this.songData.ar[0].name
       this.picUrl = this.songData.al.picUrl
       console.log(this.artist, this.name)
+    },
+    idGiven (o, n) {
+      this.reload(n)
     }
   },
   created () {
     bus.$off('reload')
     bus.$on('reload', (id) => {
-      console.log('getget', id)
+      console.log('getget', id, 'bus id', bus.id)
       this.reload(id)
     })
   },
@@ -73,7 +79,8 @@ export default {
     bus.$off('reload')
   },
   methods: {
-    pushList () {
+    pushList ({id, data}) {
+      bus.$emit('store', {id, data})
     },
     togglePlay () {
       this.isPlay = !this.isPlay
@@ -87,6 +94,9 @@ export default {
       let url = this.remote2 + `/song/detail?ids=` + id
       return this.$http.get(url).then((r) => {
         this.songData = r.body.songs[0]
+        let re = {id, data: r.body.songs[0]}
+        this.pushList(re)
+        console.log('buslist', re)
       })
     },
     urlReq (id) {
@@ -104,9 +114,9 @@ export default {
 #c-player {
 	position: relative;
 	display: flex;
+	align-items:center;
 	height: 64px;
 	padding: 5px 15px;
-	vertical-align: bottom;
 	.c-player__avatar {
 		height: 80%;
 	}

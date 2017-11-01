@@ -4,5 +4,6 @@
    "banner": "/banner",
    "personalized": "/personalized",
    "djprogram": "/personalized/djprogram",
-   "newsong": "/personalized/newsong"
+   "newsong": "/personalized/newsong",
+   "detail": "/playlist/detail"
 }

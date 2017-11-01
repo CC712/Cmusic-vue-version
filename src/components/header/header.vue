@@ -9,7 +9,7 @@
 		</li>
 		<li class="tab myStore" v-on:click='emitIndex(1)'>
 			<router-link to='mystore'>
-				<a v-bind:class='index[1]' href="javascript:void(0)">我的</a>
+				<a v-bind:class='index[1]' href="javascript:void(0)">播放列表</a>
 			</router-link>
 
 		</li>
@@ -77,8 +77,7 @@ export default {
 			align-items: flex-start;
 			.tab{
 				list-style: none;
-				height:100%;
-				width:100%;
+				flex:1 auto;
 					a{
 					padding: 10px;
 					text-align: center;
